@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace AwsLambdaTemplate
 {
@@ -35,6 +36,7 @@ namespace AwsLambdaTemplate
         protected override void Init(IWebHostBuilder builder)
         {
             builder
+                .ConfigureLogging(config=> config.ClearProviders().AddProvider(new LogProvider()))
                 .UseStartup<Startup>();
         }
 
