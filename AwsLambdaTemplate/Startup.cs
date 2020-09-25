@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -15,8 +16,6 @@ namespace AwsLambdaTemplate
 {
     public class Startup
     {
-        public const string AppS3BucketKey = "AppS3Bucket";
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,29 +23,34 @@ namespace AwsLambdaTemplate
 
         public static IConfiguration Configuration { get; private set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container
+        Stopwatch watch = new Stopwatch();
         public void ConfigureServices(IServiceCollection services)
         {
+            watch.Start();
             services.AddControllers();
 
-            // Add S3 to the ASP.NET Core dependency injection framework.
-            services.AddAWSService<Amazon.S3.IAmazonS3>();
+            Console.WriteLine($"ConfigureServices end=>{watch.ElapsedMilliseconds}ms");
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            Console.WriteLine($"configure start=>{watch.ElapsedMilliseconds}ms");
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
 
             app.UseRouting();
 
+            Console.WriteLine($"UseRouting end=>{watch.ElapsedMilliseconds}ms");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            Console.WriteLine($"UseEndpoints end=>{watch.ElapsedMilliseconds}ms");
+
+            Console.WriteLine($"configure end=>{watch.ElapsedMilliseconds}ms");
+            watch.Stop();
         }
     }
 }
