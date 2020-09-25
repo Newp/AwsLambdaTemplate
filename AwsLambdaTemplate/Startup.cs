@@ -35,10 +35,6 @@ namespace AwsLambdaTemplate
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             Console.WriteLine($"configure start=>{watch.ElapsedMilliseconds}ms");
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
 
             app.UseRouting();
 
