@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ReferenceTest;
 
 namespace AwsLambdaTemplate.Controllers
@@ -10,10 +11,17 @@ namespace AwsLambdaTemplate.Controllers
     [Route("api/[controller]")]
     public class ValuesController : ControllerBase
     {
+        public ValuesController(ILoggerProvider provider)
+        {
+            var logger = provider.CreateLogger("values_controller");
+            logger.LogTrace("values controller created");
+        }
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
+
             return new string[] { "value1", "value2", Sample.Message };
         }
 

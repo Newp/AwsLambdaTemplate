@@ -10,7 +10,7 @@ namespace AwsLambdaTemplate
     {
         public ILogger CreateLogger(string categoryName)
         {
-            return new Logger();
+            return new Logger() { categoryName = categoryName };
         }
 
         public void Dispose()
@@ -19,6 +19,9 @@ namespace AwsLambdaTemplate
 
         class Logger : ILogger
         {
+
+            public string categoryName { get; set; }
+
             public IDisposable BeginScope<TState>(TState state)
             {
                 return null;
@@ -31,7 +34,8 @@ namespace AwsLambdaTemplate
 
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
-                Console.WriteLine(state.ToString().Replace('\n', '\r'));
+                var text = formatter(state, exception).Replace('\n', '\r');
+                Console.WriteLine($"[{categoryName}] {text}");
             }
         }
     }
