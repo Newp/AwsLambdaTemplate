@@ -8,6 +8,11 @@ namespace AwsLambdaTemplate
 {
     public class LogProvider : ILoggerProvider
     {
+        public static bool Filter(LogLevel logLevel)
+        {
+            return logLevel > LogLevel.Warning;
+        }
+
         public ILogger CreateLogger(string categoryName)
         {
             return new Logger() { categoryName = categoryName };
@@ -37,7 +42,7 @@ namespace AwsLambdaTemplate
                 var text = formatter(state, exception).Replace('\n', '\r');
                 if (exception == null)
                 {
-                    Console.WriteLine($"[{categoryName}] {text}");
+                    Console.WriteLine($"[{categoryName}] [{logLevel.ToString()}] {text}");
                 }
                 else
                 {

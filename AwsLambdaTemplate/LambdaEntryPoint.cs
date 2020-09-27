@@ -36,7 +36,7 @@ namespace AwsLambdaTemplate
         protected override void Init(IWebHostBuilder builder)
         {
             builder
-                .ConfigureLogging(config=> config.ClearProviders().AddProvider(new LogProvider()))
+                .ConfigureLogging(config=> config.ClearProviders().AddProvider(new LogProvider()).AddFilter("Microsoft", LogProvider.Filter))
                 .UseStartup<Startup>();
         }
 
