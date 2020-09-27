@@ -35,7 +35,14 @@ namespace AwsLambdaTemplate
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
                 var text = formatter(state, exception).Replace('\n', '\r');
-                Console.WriteLine($"[{categoryName}] {text}");
+                if (exception == null)
+                {
+                    Console.WriteLine($"[{categoryName}] {text}");
+                }
+                else
+                {
+                    Console.WriteLine($"[{categoryName}] {text}\n" + exception.ToString());
+                }
             }
         }
     }

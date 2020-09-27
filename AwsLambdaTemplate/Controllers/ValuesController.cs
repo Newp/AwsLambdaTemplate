@@ -16,12 +16,17 @@ namespace AwsLambdaTemplate.Controllers
             var logger = provider.CreateLogger("values_controller");
             logger.LogTrace("values controller created");
         }
+        [HttpGet("error")]
+        public IEnumerable<string> Error()
+        {
+            
+            throw new Exception("error test");
+        }
 
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
-
             return new string[] { "value1", "value2", Sample.Message };
         }
 
