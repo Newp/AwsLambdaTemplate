@@ -24,8 +24,14 @@ namespace AwsLambdaTemplate
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
-                    .ConfigureLogging(config => config.ClearProviders().AddProvider(new LogProvider()))
+                    .ConfigureLogging(config => config.ClearProviders().AddProvider(new LogProvider()).AddFilter("Microsoft", Filter))
+
                     .UseStartup<Startup>();
                 });
+
+        public static bool Filter(LogLevel logLevel)
+        {
+            return logLevel > LogLevel.Warning;
+        }
     }
 }
