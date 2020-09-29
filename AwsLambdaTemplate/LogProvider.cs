@@ -8,6 +8,13 @@ namespace AwsLambdaTemplate
 {
     public class LogProvider : ILoggerProvider
     {
+        private readonly JsonLogger logger;
+
+        public LogProvider(JsonLogger logger)
+        {
+            this.logger = logger;
+        }
+
         public static bool Filter(LogLevel logLevel)
         {
             return logLevel > LogLevel.Warning;
@@ -15,7 +22,7 @@ namespace AwsLambdaTemplate
 
         public ILogger CreateLogger(string categoryName)
         {
-            return new Logger() { categoryName = categoryName };
+            return new Logger(logger, categoryName);
         }
 
         public void Dispose()
@@ -24,8 +31,15 @@ namespace AwsLambdaTemplate
 
         class Logger : ILogger
         {
+            private readonly JsonLogger logger;
+            private readonly string categoryName;
 
-            public string categoryName { get; set; }
+            public Logger(JsonLogger logger, string categoryName)
+            {
+                this.logger = logger;
+                this.categoryName = categoryName;
+            }
+
 
             public IDisposable BeginScope<TState>(TState state)
             {
@@ -39,14 +53,24 @@ namespace AwsLambdaTemplate
 
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
-                var text = formatter(state, exception).Replace('\n', '\r');
+                var message = formatter(state, exception).Replace('\n', '\r');
                 if (exception == null)
                 {
-                    Console.WriteLine($"[{categoryName}] [{logLevel.ToString()}] {text}");
+                    logger.Write(logLevel, "SYSTEM_LOG", new
+                    {
+                        categoryName,
+                        message,
+                    });
                 }
                 else
                 {
-                    Console.WriteLine($"[{categoryName}] {text}\n" + exception.ToString());
+                    logger.Write(logLevel, "SYSTEM_LOG", new
+                    {
+                        categoryName,
+                        message,
+                        error = exception.Message,
+                        stacktrace = exception.StackTrace
+                    });
                 }
             }
         }

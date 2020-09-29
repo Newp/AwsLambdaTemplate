@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using AwsLambdaTemplate.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,8 +29,17 @@ namespace AwsLambdaTemplate
         public void ConfigureServices(IServiceCollection services)
         {
             watch.Start();
-            services.AddControllers();
 
+            services
+                .AddControllers()
+                .AddNewtonsoftJson();
+
+            services
+                .AddScoped<ApiLogginMiddleware>()
+                .AddScoped<TryCatchMiddleware>()
+                .AddSingleton<JsonLogger>()
+                .AddSingleton<Encoding>(new UTF8Encoding(false))
+            ;
             Console.WriteLine($"ConfigureServices end=>{watch.ElapsedMilliseconds}ms");
         }
 
@@ -36,8 +47,13 @@ namespace AwsLambdaTemplate
         {
             Console.WriteLine($"configure start=>{watch.ElapsedMilliseconds}ms");
 
+
+            app.UseMiddleware<ApiLogginMiddleware>();
+            app.UseMiddleware<TryCatchMiddleware>();
+
             app.UseRouting();
 
+            
             Console.WriteLine($"UseRouting end=>{watch.ElapsedMilliseconds}ms");
             app.UseEndpoints(endpoints =>
             {

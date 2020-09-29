@@ -3,8 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace AwsLambdaTemplate
@@ -24,7 +22,7 @@ namespace AwsLambdaTemplate
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
-                    .ConfigureLogging(config => config.ClearProviders().AddProvider(new LogProvider()).AddFilter("Microsoft", LogProvider.Filter))
+                    .ConfigureLogging(config => config.ClearProviders().AddProvider(new LogProvider(new JsonLogger())).AddFilter("Microsoft", LogProvider.Filter))
                     .UseStartup<Startup>();
                 });
 

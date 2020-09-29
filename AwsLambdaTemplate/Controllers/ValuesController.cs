@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AwsLambdaTemplate.Middlewares;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ReferenceTest;
@@ -11,16 +12,23 @@ namespace AwsLambdaTemplate.Controllers
     [Route("api/[controller]")]
     public class ValuesController : ControllerBase
     {
-        public ValuesController(ILoggerProvider provider)
+        public ValuesController(JsonLogger logger)
         {
-            var logger = provider.CreateLogger("values_controller");
-            logger.LogTrace("values controller created");
+            logger.Write( LogLevel.Debug, "values controller created", new { });
         }
+
         [HttpGet("error")]
         public IEnumerable<string> Error()
         {
-            
+
             throw new Exception("error test");
+        }
+
+
+        [HttpGet("error2")]
+        public IEnumerable<string> Error2()
+        {
+            throw new HandledException( System.Net.HttpStatusCode.AlreadyReported);
         }
 
         // GET api/values
