@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run : 
-        working-directory: ./AwsLambdaTemplate
+        working-directory: ./
 
     steps:
     - uses: actions/checkout@v2
@@ -31,9 +31,9 @@ jobs:
     - name: install lambda tool
       run: dotnet tool install -g Amazon.Lambda.Tools
     - name: deploy to aws lambda
-      run: dotnet lambda deploy-function --region $aws_region --aws-access-key-id ${{ secrets.AWS_ACCESS_KEY_ID }}  --aws-secret-key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --function-runtime $function_runtime --function-name $function_name --configuration Release --no-restore
+      run: dotnet lambda deploy-function --region $aws_region --aws-access-key-id ${{ secrets.AWS_ACCESS_KEY_ID }} --aws-secret-key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --project-location $project_location --function-runtime $function_runtime --function-name $function_name --configuration Release --no-restore
       env:
         aws_region: ap-northeast-2
         function_runtime: dotnetcore3.1
         function_name: DeploymentTest
-      
+        project_location: AwsLambdaTemplate
