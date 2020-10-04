@@ -20,7 +20,7 @@ namespace AwsLambdaTemplate.Services
             AmazonDynamoDBConfig config = new AmazonDynamoDBConfig()
             {
                 ServiceURL = "http://localhost:8000/",
-                
+                Timeout = TimeSpan.FromSeconds(3),
                 
             };
 

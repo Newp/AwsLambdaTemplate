@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AwsLambdaTemplate.Controllers
@@ -19,8 +20,19 @@ namespace AwsLambdaTemplate.Controllers
 
         public async Task<dynamic> Get()
         {
-            var dd = await dynamoDb.Client.ListTablesAsync();
-            return dd;
+            var token = new CancellationTokenSource();
+
+            token.CancelAfter(1000);
+
+            try
+            {
+                var dd = await dynamoDb.Client.ListTablesAsync(token.Token);
+                return dd;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
