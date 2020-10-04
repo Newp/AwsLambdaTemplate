@@ -4,7 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Amazon;
+using Amazon.Internal;
+using Amazon.Runtime;
 using AwsLambdaTemplate.Middlewares;
+using AwsLambdaTemplate.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,6 +43,8 @@ namespace AwsLambdaTemplate
                 .AddScoped<TryCatchMiddleware>()
                 .AddSingleton<JsonLogger>()
                 .AddSingleton<Encoding>(new UTF8Encoding(false))
+                .AddSingleton<DynamoDbService>()
+                .AddSingleton<RegionEndpoint>(RegionEndpoint.APNortheast2)
             ;
             Console.WriteLine($"ConfigureServices end=>{watch.ElapsedMilliseconds}ms");
         }
