@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AwsLambdaTemplate.Services;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,17 @@ namespace AwsLambdaTemplate.Controllers
     [Route("api/[controller]")]
     public class DynamoDbController
     {
+        readonly DynamoDbService dynamoDb;
 
-        public string Get()
+        public DynamoDbController(DynamoDbService dynamoDb)
         {
-            return "dynamodb ok";
+            this.dynamoDb = dynamoDb;
+        }
+
+        public async Task<dynamic> Get()
+        {
+            var dd = await dynamoDb.Client.ListTablesAsync();
+            return dd;
         }
     }
 }

@@ -23,9 +23,6 @@ namespace AwsLambdaTemplate.Tests
             var result = await client.GetAsync("/api/dynamodb");
 
             Assert.Equal(System.Net.HttpStatusCode.OK, result.StatusCode);
-
-            var responseBody = await result.Content.ReadAsStringAsync();
-            Assert.Equal("dynamodb ok", responseBody);
         }
     }
 }
