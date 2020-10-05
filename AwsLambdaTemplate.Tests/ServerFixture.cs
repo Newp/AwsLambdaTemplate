@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,9 @@ namespace AwsLambdaTemplate.Tests
         public TestServer testServer = new TestServer(new WebHostBuilder()
                 .UseStartup<Startup>()
                 .ConfigureTestServices(collection =>
-                {
-                    
-                }));
+                    collection
+                        .AddSingleton<JsonLogger, JsonUnitTestLogger>()
+                ));
 
         public HttpClient CreateClient() => this.testServer.CreateClient();
     }

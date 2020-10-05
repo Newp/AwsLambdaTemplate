@@ -22,7 +22,7 @@ namespace AwsLambdaTemplate.Controllers
         {
             var token = new CancellationTokenSource();
 
-            token.CancelAfter(1000);
+            token.CancelAfter(5000);
 
             try
             {

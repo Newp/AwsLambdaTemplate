@@ -16,5 +16,10 @@ namespace AwsLambdaTemplate
 
             Console.WriteLine( json.Replace('\n','\r') );
         }
+
+        protected virtual void Write(string message)
+        {
+            Console.WriteLine(message);
+        }
     }
 }
