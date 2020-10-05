@@ -20,18 +20,25 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
+
     - name: Install dependencies
       run: dotnet restore
+
     - name: Build
       run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+
     - name : Run Docker
       run: docker-compose up -d
+
     - name : Listing Docker Images
       run: docker ps
+
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+
     - name: install lambda tool
       run: dotnet tool install -g Amazon.Lambda.Tools
+
     - name: deploy to aws lambda
       run: dotnet lambda deploy-function --region $aws_region --aws-access-key-id ${{ secrets.AWS_ACCESS_KEY_ID }} --aws-secret-key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --project-location $project_location --function-runtime $function_runtime --function-name $function_name --configuration Release --no-restore
       env:
