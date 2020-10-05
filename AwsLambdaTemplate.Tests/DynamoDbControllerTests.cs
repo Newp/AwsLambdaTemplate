@@ -40,9 +40,33 @@ namespace AwsLambdaTemplate.Tests
         [Fact]
         public async Task ConnectOk()
         {
-            var res = await this.client.GetAsync("http://localhost:9200/");
+            try
+            {
+                var res = await this.client.GetAsync("http://localhost:9200/");
 
-            Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+                Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+            }
+            catch (Exception ex)
+            {
+                var swap = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("<<==========================>>");
+                Console.ForegroundColor = swap;
+                AllException(ex);
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("<<==========================>>");
+                Console.ForegroundColor = swap;
+                throw;
+            }
+        }
+
+        void AllException(Exception exception)
+        {
+            Console.WriteLine(exception.ToString());
+
+            if (exception.InnerException != null)
+                AllException(exception.InnerException);
         }
     }
 }

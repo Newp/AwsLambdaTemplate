@@ -4,6 +4,7 @@ services:
         image: amazon/dynamodb-local
         ports:
             - "8000:8000"
+
     elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
         environment:
