@@ -3,12 +3,9 @@ name: .NET Core
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
-  build:
-
+  setup:
     runs-on: ubuntu-latest
     defaults:
       run : 
@@ -17,8 +14,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name : Run Docker
-      run: docker-compose up -d
+    - name : Run Docker Images
+      run: docker-compose -f ./.github/docker-compose-unittest.yml up -d
 
     - name : Listing Docker Images
       run: docker ps
@@ -28,25 +25,25 @@ jobs:
       with:
         dotnet-version: 3.1.301
 
+  build:    
     - name: Install dependencies
       run: dotnet restore
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
-      
+
+  test:      
     - name: curl - elasticsearch api 
       run : curl http://localhost:9200
 
     - name: curl - dynamodb
       run : curl http://localhost:8000
 
-    - name: curl - helloworld 
-      run : curl http://localhost:8080
-
     - name: Test
       run: dotnet test --no-restore --verbosity normal
 
-    - name: install lambda tool
+  deploy: 
+  - name: install lambda tool
       run: dotnet tool install -g Amazon.Lambda.Tools
 
     - name: deploy to aws lambda

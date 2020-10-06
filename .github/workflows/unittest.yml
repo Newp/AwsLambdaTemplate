@@ -1,0 +1,42 @@
+name: .NET Core
+
+on:
+  pull_request:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    defaults:
+      run : 
+        working-directory: ./
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name : Run Docker Images
+      run: docker-compose up -d
+
+    - name : Listing Docker Images
+      run: docker ps
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+
+  build:    
+    - name: Install dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+  test:      
+    - name: curl - elasticsearch api 
+      run : curl http://localhost:9200
+
+    - name: curl - dynamodb
+      run : curl http://localhost:8000
+
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
