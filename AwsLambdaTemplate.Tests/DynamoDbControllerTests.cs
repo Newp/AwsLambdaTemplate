@@ -20,7 +20,19 @@ namespace AwsLambdaTemplate.Tests
 
             var tables = await dynamodb.Client.ListTablesAsync();
 
-            base.GetService<JsonLogger>().Debug(tables);
+            this.Logger.Debug(tables);
+        }
+
+
+        [Fact(Timeout = 3000)]
+        public async Task ApiCallTest()
+        {
+            HttpClient client = new HttpClient();
+
+            var response = await client.GetAsync("http://localhost:8000");
+
+            this.Logger.Debug(response.StatusCode);
+            this.Logger.Debug(await response.Content.ReadAsStringAsync());
         }
     }
 

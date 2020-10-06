@@ -24,7 +24,7 @@ namespace AwsLambdaTemplate.Services
                 
             };
 
-            Client = new AmazonDynamoDBClient(config);
+            Client = new AmazonDynamoDBClient("anonymous", "anonymous", config);
 
             Context = new DynamoDBContext(Client);
             RegisterConverter();

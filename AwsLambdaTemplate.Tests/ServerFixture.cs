@@ -21,5 +21,7 @@ namespace AwsLambdaTemplate.Tests
         public HttpClient CreateClient() => this.testServer.CreateClient();
 
         public T GetService<T>() => this.testServer.Services.GetService<T>();
+
+        public JsonLogger Logger => this.GetService<JsonLogger>();
     }
 }
