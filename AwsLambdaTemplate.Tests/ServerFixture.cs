@@ -11,7 +11,7 @@ namespace AwsLambdaTemplate.Tests
 {
     public class ServerFixture
     {
-        public TestServer testServer = new TestServer(new WebHostBuilder()
+        TestServer testServer = new TestServer(new WebHostBuilder()
                 .UseStartup<Startup>()
                 .ConfigureTestServices(collection =>
                     collection
@@ -19,5 +19,7 @@ namespace AwsLambdaTemplate.Tests
                 ));
 
         public HttpClient CreateClient() => this.testServer.CreateClient();
+
+        public T GetService<T>() => this.testServer.Services.GetService<T>();
     }
 }

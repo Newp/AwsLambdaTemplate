@@ -37,6 +37,9 @@ jobs:
     - name: curl - elasticsearch api 
       run : curl http://localhost:9200
 
+    - name: curl - dynamodb
+      run : curl http://localhost:8000
+
     - name: curl - helloworld 
       run : curl http://localhost:8080
 

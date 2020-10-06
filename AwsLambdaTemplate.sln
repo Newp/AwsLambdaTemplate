@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwsLambdaTemplate", "AwsLam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwsLambdaTemplate.Tests", "AwsLambdaTemplate.Tests\AwsLambdaTemplate.Tests.csproj", "{C62DB508-F8CD-476D-A0D3-EEFE53322B58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferenceTest", "ReferenceTest\ReferenceTest.csproj", "{8B00FBAF-9C31-42C6-8268-E1A017B7A603}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReferenceTest", "ReferenceTest\ReferenceTest.csproj", "{8B00FBAF-9C31-42C6-8268-E1A017B7A603}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{78A84AE7-DF5D-4FB3-98AF-8AC05EBCF0DB}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\deploy.yml = .github\workflows\deploy.yml
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

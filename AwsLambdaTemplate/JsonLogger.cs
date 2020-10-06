@@ -9,6 +9,8 @@ namespace AwsLambdaTemplate
 {
     public class JsonLogger
     {
+        public void Debug(object value) => this.Write(LogLevel.Debug, "debug", value);
+
         public void Write(LogLevel level, string subject, object value)
         {
             var time = DateTime.Now;

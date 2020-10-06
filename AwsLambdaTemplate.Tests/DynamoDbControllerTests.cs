@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.TestHost;
+﻿using AwsLambdaTemplate.Services;
+using Microsoft.AspNetCore.TestHost;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +10,17 @@ using Xunit;
 
 namespace AwsLambdaTemplate.Tests
 {
-    public class DynamoDbControllerTests : ServerFixture
+    public class DynamoDbTests : ServerFixture
     {
-        HttpClient client;
 
-        public DynamoDbControllerTests()
-        {
-            this.client = base.CreateClient();
-        }
-
-        [Fact]
+        [Fact(Timeout = 300000)]
         public async Task ConnectionTest()
         {
-            var result = await client.GetAsync("/api/dynamodb");
+            var dynamodb = base.GetService<DynamoDbService>();
 
-            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+            var tables = await dynamodb.Client.ListTablesAsync();
+
+            base.GetService<JsonLogger>().Debug(tables);
         }
     }
 
